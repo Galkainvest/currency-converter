@@ -1,0 +1,29 @@
+# Конвертер валют с использованием открытого API
+
+import requests
+
+def get_exchange_rate(base_currency, target_currency):
+    """
+    Получает курс обмена между двумя валютами с использованием API.
+    """
+    url = f"https://api.exchangerate.host/convert?from={base_currency}&to={target_currency}"
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+        return data['result']
+    else:
+        return "Ошибка при получении данных."
+
+def convert_currency(amount, base_currency, target_currency):
+    """
+    Конвертирует сумму из одной валюты в другую.
+    """
+    rate = get_exchange_rate(base_currency, target_currency)
+    if isinstance(rate, (int, float)):
+        return amount * rate
+    else:
+        return rate
+
+# Пример использования:
+# print(get_exchange_rate('USD', 'EUR'))
+# print(convert_currency(100, 'USD', 'EUR'))
